@@ -2,7 +2,7 @@
 # GLOBALS                                                                       #
 #################################################################################
 
-PROJECT_NAME = RAG-pieline
+PROJECT_NAME = rag-pipeline
 PYTHON_VERSION = 3.12
 PYTHON_INTERPRETER = python
 
@@ -65,7 +65,7 @@ create_environment:
 ## Make dataset
 .PHONY: data
 data: requirements
-	$(PYTHON_INTERPRETER) RAGPipeline/dataset.py
+	$(PYTHON_INTERPRETER) ragpipeline/dataset.py
 
 
 #################################################################################

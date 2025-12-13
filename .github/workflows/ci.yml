@@ -4,8 +4,18 @@ name: CI Pipeline
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - '**.md'          # Ignore all Markdown files anywhere
+      - 'docs/**'        # Ignore the documentation folder
+      - 'LICENSE'        # Ignore license
+      - '.gitignore'     # Ignore gitignore
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
+      - '.gitignore'
 
 jobs:
   quality-check:
