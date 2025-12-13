@@ -4,7 +4,38 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-An Opensource Implementation of RAG LLM Pipeline.
+An open-source Retrieval Augmented Generation (RAG) pipeline designed to answer technical questions about Large Language Model (LLM) architectures. 
+
+This project uses **ArXiv** papers as its knowledge base and runs entirely locally using **Ollama** and **ChromaDB**.
+
+---
+
+## 🚀 Quick Start
+
+You can set up the entire project with just three commands.
+
+### 1. Prerequisite
+Ensure you have `Make`, `Conda` and [Ollama](https://ollama.com/) installed.
+
+### 2. Install
+Run these commands in your terminal:
+
+```bash
+# 1. Create the Conda environment
+make create_environment
+
+# 2. Activate the environment
+conda activate rag-pipeline
+
+# 3. Install dependencies
+make requirements
+```
+### 3. Get the Data
+Download the seminal ML papers (Attention is All You Need, Llama 2, etc.) automatically:
+```bash
+make data
+```
+This downloads the PDFs into `data/raw/`.
 
 ## Project Organization
 
