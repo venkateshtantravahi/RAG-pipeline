@@ -73,6 +73,12 @@ data: requirements
 ingest: requirements
 	$(PYTHON_INTERPRETER) ragpipeline/ingestion.py
 
+
+## Retriever search for a querying top_k results
+.PHONY: retrieve
+retrieve: requirements
+	$(PYTHON_INTERPRETER) ragpipeline/retrieval.py
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
