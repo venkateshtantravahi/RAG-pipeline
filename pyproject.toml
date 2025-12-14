@@ -35,6 +35,7 @@ dependencies = [
     "langchain",
     "langchain-community",
     "langchain-chroma",
+    "langchain-huggingface",
     "langchain-text-splitters",
     "marker-pdf",
     "chromadb",
