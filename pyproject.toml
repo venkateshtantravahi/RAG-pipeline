@@ -35,10 +35,12 @@ dependencies = [
     "langchain",
     "langchain-community",
     "langchain-chroma",
+    "langchain-text-splitters",
+    "marker-pdf",
     "chromadb",
-    "pypdf",
     "sentence-transformers",
-    "ollama"
+    "ollama",
+    "pillow-heif"
 ]
 requires-python = "~=3.12.0"
 

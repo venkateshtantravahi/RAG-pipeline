@@ -68,6 +68,11 @@ data: requirements
 	$(PYTHON_INTERPRETER) ragpipeline/dataset.py
 
 
+## Ingest Data into local vector db
+.PHONY: ingest
+ingest: requirements
+	$(PYTHON_INTERPRETER) ragpipeline/ingestion.py
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
