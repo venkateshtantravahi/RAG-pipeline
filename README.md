@@ -120,3 +120,25 @@ make ingest
 python -m ragpipeline.ingestion --limit 1
 ```
 
+### 5. Architecture: Retrieval Engine
+
+We use a **Hybrid Search** strategy to balance semantic understanding with keyword precision.
+
+### The Problem
+Standard Vector Search (Dense Retrieval) often fails on specific technical terms (e.g., *"Scaled Dot-Product Attention"*) because the embedding model dilutes the specific phrase into a generic "math/AI" vector.
+
+### Our Solution
+We implemented a custom **Reranking Layer** in `retrieval.py`:
+
+1.  **Broad Phase:** Retrieve top `3 * k` candidates using standard Vector Search (HNSW Index).
+2.  **Rerank Phase:** Apply a "Keyword Boost" algorithm:
+    * If the exact query phrase appears in the chunk, the distance score is **halved** (improving rank).
+    * If >70% of query keywords appear, the score is reduced by **20%**.
+3.  **Filter Phase:** Strict cutoff for any result with a distance score > `0.8` to prevent hallucinations.
+
+Usage:
+```bash
+# Run standalone semantic search test
+python -m ragpipeline.retrieval
+```
+
