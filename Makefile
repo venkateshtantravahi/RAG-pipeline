@@ -85,6 +85,28 @@ retrieve: requirements
 generate: requirements
 	$(PYTHON_INTERPRETER) ragpipeline/generation.py
 
+#################################################################
+# Single Shot Setup & Run
+################################################################
+
+## Single setup command to install all dependencies required
+.PHONY: setup
+setup: requirements
+	@echo "Pulling the Specific LLM model (llama3.2:1b)..."
+	ollama pull llama3.2:1b
+	@echo "Ingesting data into Vector Database..."
+	python -m ragpipeline.ingestion
+
+## Run will start the api server for rag pipeline
+.PHONY: run
+run:
+	@echo "Starting FASTAPI Server..."
+	uvicorn ragpipeline.api:app --reload --host 0.0.0.0 --port 8000
+
+## start-all will spin up the database load data and spin up the server for requests.
+.PHONY: start-all
+start-all: setup run
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################

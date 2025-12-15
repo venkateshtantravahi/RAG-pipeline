@@ -24,6 +24,8 @@ dependencies = [
     "notebook",
     "numpy",
     "pandas",
+    "fastapi",
+    "uvicorn",
     "pip",
     "pytest",
     "python-dotenv",

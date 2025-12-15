@@ -4,6 +4,12 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" alt="" />
 </a>
 
+![Tests](https://github.com/venkateshtantravahi/RAG-pipeline/actions/workflows/ci.yml/badge.svg)
+
+[![Contribute](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
+
+![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg?style=flat-square)
+
 An open-source Retrieval Augmented Generation (RAG) pipeline designed to answer technical questions about Large Language Model (LLM) architectures. 
 
 This project uses **ArXiv** papers as its knowledge base and runs entirely locally using **Ollama** and **ChromaDB**.
@@ -11,6 +17,15 @@ This project uses **ArXiv** papers as its knowledge base and runs entirely local
 ---
 
 ## Quick Start
+
+You can set up everything (install dependencies, download the model, ingest data, and start the server) with one command.
+
+```bash
+make start-all
+```
+This will launch the API at http://0.0.0.0:8000.
+
+or
 
 You can set up the entire project with just three commands.
 
@@ -168,3 +183,47 @@ or
 make generate
 ```
 
+## API Documentation
+
+Once the server is running, the system auto-generates interactive documentation.
+
+**👉 [Open Swagger UI (Interactive Docs)](http://localhost:8000/docs)**
+
+### Key Endpoints
+
+| Method | Endpoint        | Description                                                                            |
+|:-------|:----------------|:---------------------------------------------------------------------------------------|
+| `GET`  | `/health`       | **Liveness Probe.** Returns `200 OK` if the RAG models are loaded and ready in memory. |
+| `POST` | `/api/v1/query` | **Inference Engine.** Accepts a JSON payload and returns the LLM answer + citations.   |
+
+### Example Request
+You can test the API from your terminal using `curl`:
+
+```bash
+curl -X 'POST' \
+  'http://localhost:8000/api/v1/query' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "query": "What is Scaled Dot-Product Attention?",
+  "k": 3
+}'
+```
+
+#### Example Response
+```json
+{
+  "answer": "Scaled Dot-Product Attention is a mechanism that computes the dot products of the query with all keys, divides each by the square root of the dimension of the keys, and applies a softmax function...",
+  "processing_time_ms": 145.2,
+  "sources": [
+    {
+      "source": "attention_is_all_you_need.pdf",
+      "content_preview": "We call our particular attention 'Scaled Dot-Product Attention'...",
+      "score": 0.34
+    }
+  ]
+}
+```
+
+##  Contributing
+I welcome contributions or Improvements for the Existing Pipeline. Please
+read our [Contribution Guidelines](contribution.md) to get started.
