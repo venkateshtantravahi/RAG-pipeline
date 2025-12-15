@@ -79,6 +79,12 @@ ingest: requirements
 retrieve: requirements
 	$(PYTHON_INTERPRETER) ragpipeline/retrieval.py
 
+
+## Generator Module Testing for RAG Pipeline
+.PHONY: generate
+generate: requirements
+	$(PYTHON_INTERPRETER) ragpipeline/generation.py
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
