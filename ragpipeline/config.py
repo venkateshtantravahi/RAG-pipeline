@@ -25,6 +25,8 @@ EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 CHUNK_SIZE = 800
 CHUNK_OVERLAP = 80
 
+CROSS_ENCODER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+
 LLM_MODEL_NAME = "llama3.2:1b"
 
 # --- CONFIGURABLE PROMPT TEMPLATE ---
