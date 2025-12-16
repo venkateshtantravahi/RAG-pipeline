@@ -125,7 +125,10 @@ def embed_and_store(documents: List[Document], batch_size: int = 50):
     for i in range(0, total_docs, batch_size):
         batch = documents[i : i + batch_size]
         Chroma.from_documents(
-            documents=batch, embedding=embeddings, persist_directory=str(VECTOR_DB_DIR)
+            documents=batch,
+            embedding=embeddings,
+            persist_directory=str(VECTOR_DB_DIR),
+            collection_metadata={"hnsw:space": "cosine"},
         )
         logger.debug(f"Processed batch {i + 1}-{min(i + batch_size, total_docs)}")
 
