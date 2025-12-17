@@ -32,9 +32,9 @@ class RAGGenerator:
         increases randomness, leading to more creative and diverse, 
         but potentially less coherent, text.
         """
-        # 'temperature=0.1' makes the model factual and deterministic.
+        # 'temperature=0.2' makes the model factual and deterministic.
         # We use ChatOllama for easy local inference.
-        self.llm = ChatOllama(model=LLM_MODEL_NAME, temperature=0.1)
+        self.llm = ChatOllama(model=LLM_MODEL_NAME, temperature=0.2, keep_alive="5m")
 
         # Create the chain: Prompt -> LLM -> String Parser
         self.prompt = ChatPromptTemplate.from_messages(
@@ -55,10 +55,12 @@ class RAGGenerator:
         block. Adds Source Metadata so the LLM knows where info came from.
         """
         formatted_text = []
-        for doc in docs:
+        for i, doc in enumerate(docs):
             source = doc.metadata.get("source", "Unknown")
-            # We add clear delimiters so the LLM doesn't get confused
-            formatted_text.append(f"--- SOURCE: {source} ---\n{doc.page_content}")
+            clean_content = doc.page_content.replace("\n", " ").strip()
+
+            entry = f'<doc id="{i + 1}" source="{source}">\n{clean_content}\n</doc>'
+            formatted_text.append(entry)
 
         return "\n\n".join(formatted_text)
 
@@ -100,19 +102,20 @@ if __name__ == "__main__":
 
         print(f"\n Question: {test_query}\n")
 
-        docs = retriever.search(test_query, k=3, score_threshold=0.8)
+        docs = retriever.search(test_query, k=3)
 
         if not docs:
             print("No documents found. Aborting generation.")
         else:
+            docs = [doc for doc, score in docs]
             print(f"Found {len(docs)} relevant chunks. Generating answer...\n")
-            print("-" * 40)
+            print("-" * 50)
 
             full_response = ""
-            for token in generator.generate_stream(test_query, [d[0] for d in docs]):
+            for token in generator.generate_stream(test_query, docs):
                 print(token, end="", flush=True)
                 full_response += token
-            print("\n" + "-" * 40)
+            print("\n" + "-" * 50)
 
     except Exception as e:
         logger.error(f"RAG Pipeline encountered an exception: {e}")
