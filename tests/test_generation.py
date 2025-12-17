@@ -18,7 +18,7 @@ def test_generator_initialization(mock_ollama):
     """Test if Generator initializes with the correct model config."""
     generator = RAGGenerator()
 
-    mock_ollama.assert_called_once()
+    mock_ollama.assert_called_with(model="llama3.2:1b", temperature=0.2, keep_alive="5m")
     assert generator.chain is not None
 
 
@@ -29,10 +29,12 @@ def test_format_docs(mock_retrieved_docs):
 
     formatted_text = generator.format_docs(mock_retrieved_docs)
 
-    assert "--- SOURCE: ai_paper.pdf ---" in formatted_text
+    assert '<doc id="1" source="ai_paper.pdf">' in formatted_text
     assert "Transformers are fast." in formatted_text
-    assert "--- SOURCE: old_paper.pdf ---" in formatted_text
-    assert "\n\n" in formatted_text
+    assert "</doc>" in formatted_text
+
+    assert '<doc id="2" source="old_paper.pdf">' in formatted_text
+    assert "LSTMs are slow." in formatted_text
 
 
 @patch("ragpipeline.generation.ChatOllama")
@@ -53,16 +55,16 @@ def test_generate_stream_success(mock_ollama, mock_retrieved_docs):
     generator = RAGGenerator()
 
     mock_chain = MagicMock()
-    mock_chain.stream.return_value = ["Token1", "Token2", "Token3"]
+    mock_chain.stream.return_value = ["Token1", "Token2"]
     generator.chain = mock_chain
 
     stream = generator.generate_stream("What are Transformers?", mock_retrieved_docs)
     response = list(stream)
 
-    assert response == ["Token1", "Token2", "Token3"]
+    assert response == ["Token1", "Token2"]
 
     mock_chain.stream.assert_called_once()
     call_args = mock_chain.stream.call_args[0][0]
     assert "context" in call_args
     assert "question" in call_args
-    assert "Transformers are fast" in call_args["context"]
+    assert '<doc id="1" source="ai_paper.pdf">' in call_args["context"]

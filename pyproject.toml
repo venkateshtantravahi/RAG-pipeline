@@ -38,6 +38,7 @@ dependencies = [
     # RAG & AI Stack
     "langchain",
     "langchain-community",
+    "langchain-classic",
     "langchain-chroma",
     "langchain-huggingface",
     "langchain-text-splitters",

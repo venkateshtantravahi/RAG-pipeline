@@ -103,6 +103,12 @@ run:
 	@echo "Starting FASTAPI Server..."
 	uvicorn ragpipeline.api:app --reload --host 0.0.0.0 --port 8000
 
+## Run streamlit server
+.PHONY: run-streamlit
+run-streamlit:
+	@echo "Starting Streamlit Server..."
+	streamlit run frontend/app.py
+
 ## start-all will spin up the database load data and spin up the server for requests.
 .PHONY: start-all
 start-all: setup run
